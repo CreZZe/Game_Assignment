@@ -9,6 +9,7 @@ import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -46,9 +47,11 @@ public class Puzzlegame extends JFrame {
    private JButton    blank = new JButton("-");   
    
    List<JButton> buttons = new ArrayList<>();
+   //List<List<JButton>> buttons2 = new ArrayList<>();
    
    public Puzzlegame() { 
        EventHandler handler = new EventHandler();
+       //buttons2.add(buttons);
        
        buttons.add(ett);
        buttons.add(två);
@@ -66,6 +69,7 @@ public class Puzzlegame extends JFrame {
        buttons.add(fjorton);
        buttons.add(femton);
        buttons.add(blank);
+       Collections.shuffle(buttons);
     
 
      //area.setFont(new Font("Monospaced", Font.PLAIN, 12)); 
@@ -114,14 +118,29 @@ public class Puzzlegame extends JFrame {
          public void actionPerformed(ActionEvent e) {
              
              
+        
+        for (int i = 0; i < buttons.size(); i++) {
+            if (e.getSource() == buttons.get(i)) {
+                try {
+                    if (buttons.get(i + 1) == blank) {
+                        System.out.println("BLANK är till höger");
+                    }
+                    else if (buttons.get(i - 1) == blank) {
+                        System.out.println("BLANK är till vänster");
+                    }
+                }
+                catch (Exception error) {}
+            }
+        }
              
              
-         for (JButton button : buttons) {
-             if (e.getSource() == button) {
-                 System.out.println(button.getActionCommand());
-                 System.out.println(button.getLocation());
-             }
-         }
+//         for (JButton button : buttons) {
+//             if (e.getSource() == button) {
+//                 System.out.println(button.getActionCommand());
+//                 System.out.println(button.getLocation());
+//                 
+//             }
+//         }
          
          //Om jag klickar på 15 vill jag kontrollera om BLANK är positionerad t.ex. X+90 om höger, X-90 om vänster, Y+90 över eller Y-90 under
 
