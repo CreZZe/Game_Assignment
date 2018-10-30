@@ -45,6 +45,7 @@ public class Puzzlegame extends JFrame implements ActionListener {
   private JButton    femton = new JButton("15");
   private JButton    blank = new JButton("-");
 
+  
   int kartBredd = 4;
   int kartHöjd = 4;
   public JButton[][] spelplan = new JButton[kartBredd][kartHöjd];
@@ -83,7 +84,7 @@ public class Puzzlegame extends JFrame implements ActionListener {
 
   for (int y = 0; y < kartHöjd; y++)
   {
-      for (int x = 0; x < kartBredd; x++)
+      for (int x = 0; x < kartBredd; x++) //kan ju här även skapa knapparna vilket även gör den delen dynamisk
       {
           spelplan[x][y] = buttons.get(tal);
           buttons.get(tal).addActionListener(this); //??
@@ -134,13 +135,10 @@ System.out.println(spelplan[2][2].getClass().getName()); //vi vil dock kunan fp 
     @Override
     public void actionPerformed(ActionEvent e) {
         
-        System.out.println(spelplan[1][0].getActionCommand());
-        System.out.println(spelplan[1][2].getActionCommand());
-        System.out.println(spelplan[0][1].getActionCommand());
-        System.out.println(spelplan[2][1].getActionCommand());
 
-        JButton clickedButton = (JButton) e.getSource();
-        System.out.println(e.getSource());
+
+    JButton clickedButton = (JButton) e.getSource();
+
     // undersök vilken knapp användaren har tryckt på
     int tal = 0;
     for (int y = 0; y < kartHöjd; y++)
@@ -148,102 +146,117 @@ System.out.println(spelplan[2][2].getClass().getName()); //vi vil dock kunan fp 
 
       for (int x = 0; x < kartBredd; x++)
       {
-        //System.out.println("lul");
-        //spelplan[x][y] = buttons.get(tal);
-        if (spelplan[x][y].equals(clickedButton))
-               // (e.getSource() == spelplan[x][y]) // kan plocka ut knappposition
-          System.out.println("ja");
-         //System.out.println(spelplan[x][y].getLocation());
-          
-          
-//          System.out.println(spelplan[x][y+1]);
-//          System.out.println(spelplan[x][y-1]);
-//          System.out.println(spelplan[x+1][y]);
-//          System.out.println(spelplan[x-1][y]);
-//            if (spelplan[x][y+1].getText() == "-")
-//            {
-//
-//                try {
-//                    if (spelplan[x][y+1].getText() == "-")
-//                        
-//                        System.out.println("blank är ovan eller under");
-//                    
-//                    
-//                }
-//                catch (Exception error) {}
-//            }
-                //ovanför == blank
-        
+        if (spelplan[x][y].equals(clickedButton)){
+            if(spelplan[x][y].getText().equals("-")) return; 
+            // gör att inget händer vid tryck på vår blanka knapp
+            System.out.println(clickedButton.getText());
+            
+            
+            if (x > 0) // kan kolla åt vänster
+            {
+                if (spelplan[x-1][y].getText().equals("-"))
+                {
+                System.out.println("blank är till vänster");
+                
+                String tempBtnName4 = spelplan[x][y].getText();
+                spelplan[x][y].setText(spelplan[x-1][y].getText());
+                spelplan[x-1][y].setText(tempBtnName4);
+                }
+            }
+            if (x < kartBredd-1) // kan kolla åt höger
+            {
+                if (spelplan[x+1][y].getText().equals("-"))
+                {
+                System.out.println("blank är till höger");
+                
+                String tempBtnName3 = spelplan[x][y].getText();
+                spelplan[x][y].setText(spelplan[x+1][y].getText());
+                spelplan[x+1][y].setText(tempBtnName3);
+                }
+            }
+            if (y > 0) // kan kolla uppåt
+            {
+                if (spelplan[x][y-1].getText().equals("-"))
+                {
+                System.out.println("blank är ovanför");
+                
+                String tempBtnName2 = spelplan[x][y].getText();
+                spelplan[x][y].setText(spelplan[x][y-1].getText());
+                spelplan[x][y-1].setText(tempBtnName2);
+                }
+            }
+            if (y < kartHöjd-1) // kan kolla nedåt
+            {
+                if (spelplan[x][y+1].getText().equals("-"))
+                {
+                System.out.println("blank är nedanför");
+
+                String tempBtnName = spelplan[x][y].getText();
+                spelplan[x][y].setText(spelplan[x][y+1].getText());
+                spelplan[x][y+1].setText(tempBtnName);
+                }
+            }
+        }
       }
     }
+//    if (clickedButton.equals(spelplan[1][1])) {
+//        System.out.println("nuså");
+//        if (spelplan[1][1].getActionCommand() == "-"){ //ändra till equals
+//            System.out.println("typiskt");
+//        }
+//            
+//        
+//        System.out.println(spelplan[1][1+1].getText());
+//        
+//       
+//
+//            if (spelplan[1][1+1].getText().equals("-")){
+//
+//                System.out.println("blank är nedanför");
+//                //skapa generell metod)
+//                String tempBtnName = spelplan[1][1].getText();
+//                spelplan[1][1].setText(spelplan[1][1+1].getText());
+//                spelplan[1][1+1].setText(tempBtnName);
+////                JButton tempButton = spelplan[1][1];
+////                tempButton.setLocation(spelplan[1][1].getLocation());
+////                spelplan[1][1] = spelplan[1][1+1];
+////                spelplan[1][1].setLocation(spelplan[1][1+1].getLocation());
+////                spelplan[1][1+1] = tempButton;
+////                spelplan[1][1+1].setLocation(tempButton.getLocation());
+//                
+//                k.repaint();
+//            }
+//
+//        System.out.println(spelplan[1][1-1].getText());
+//
+//            if (spelplan[1][1-1].getText().equals("-")){
+//
+//                System.out.println("blank är ovanför");
+//                String tempBtnName2 = spelplan[1][1].getText();
+//                spelplan[1][1].setText(spelplan[1][1-1].getText());
+//                spelplan[1][1-1].setText(tempBtnName2);
+//            }
+//
+//                System.out.println(spelplan[1+1][1].getText());
+//
+//            if (spelplan[1+1][1].getText().equals("-")){
+//
+//                System.out.println("blank är till höger");
+//                String tempBtnName3 = spelplan[1][1].getText();
+//                spelplan[1][1].setText(spelplan[1+1][1].getText());
+//                spelplan[1+1][1].setText(tempBtnName3);
+//            }
+//
+//            System.out.println(spelplan[1-1][1].getText());
+//            if (spelplan[1-1][1].getText().equals("-")){
+//
+//                System.out.println("blank är till vänster");
+//                String tempBtnName4 = spelplan[1][1].getText();
+//                spelplan[1][1].setText(spelplan[1-1][1].getText());
+//                spelplan[1-1][1].setText(tempBtnName4);
+//            }
+//    }
 
-    if (e.getSource() == ett) {
-        System.out.println("hej");
-        //ett.getComponent(0);
-        //remove(ett);
-        //kolla närliggande rutor, x, -x, y, -y för tom space, if yes -> flytta dit
-    }
-    if (e.getSource() == spelplan[1][1]) {
-        System.out.println("nuså");
-        if (spelplan[1][1].getActionCommand() == "-")
-            System.out.println("typiskt");
-       
-        try {
-            if (spelplan[1][1+1].getText() == "-")
-
-                System.out.println("blank är nedanför");
-                //skapa generell metod)
-                JButton tempButton = spelplan[1][1];
-                tempButton.setLocation(spelplan[1][1].getLocation());
-                spelplan[1][1] = spelplan[1][1+1];
-                spelplan[1][1].setLocation(spelplan[1][1+1].getLocation());
-                spelplan[1][1+1] = tempButton;
-                spelplan[1][1+1].setLocation(tempButton.getLocation());
-                
-                k.repaint();
-                
-                
-
-
-        }
-        catch (Exception error) {}
-        
-        try {
-            if (spelplan[1][1-1].getText() == "-")
-
-                System.out.println("blank är ovanför");
-                JButton tempButton = spelplan[1][1];
-                spelplan[1][1] = spelplan[1][1-1];
-                spelplan[1][1-1] = tempButton;
-                k.repaint();    
-
-        }
-        catch (Exception error) {}
-        
-        try {
-            if (spelplan[1+1][1].getText() == "-")
-
-                System.out.println("blank är till höger");
-                JButton tempButton = spelplan[1][1];
-                spelplan[1][1] = spelplan[1+1][1];
-                spelplan[1+1][1] = tempButton;
-                k.repaint();    
-
-        }
-        catch (Exception error) {}
-        
-        try {
-            if (spelplan[1-1][1].getText() == "-")
-
-                System.out.println("blank är till vänster");
-                JButton tempButton = spelplan[1][1];
-                spelplan[1][1] = spelplan[1-1][1];
-                spelplan[1-1][1] = tempButton;
-                k.repaint();    
-
-        }
-        catch (Exception error) {}
-    }
 //    void changePosition(JButton clicked, JButton blank)
 //    {
 //        
@@ -257,12 +270,12 @@ System.out.println(spelplan[2][2].getClass().getName()); //vi vil dock kunan fp 
     */
 
 
-    else if (e.getSource() == sluta) {
+    if (e.getSource() == sluta) {
       System.exit(0);
     }
-
+}
    //enums 2d array?
-   }
+   
 
     public static void main(String[] args) {
         Puzzlegame pg = new Puzzlegame();
