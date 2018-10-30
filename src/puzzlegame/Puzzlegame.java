@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
@@ -94,6 +95,22 @@ public class Puzzlegame extends JFrame implements ActionListener {
               System.out.println("success");
       }
   }
+  
+  //byggarbetsplats
+    for (int y = 0; y < kartHöjd; y++) //egentligen behövs bara en längd/höjd då det är en kvadrat
+  {
+      for (int x = 0; x < kartBredd; x++) //kan ju här även skapa knapparna vilket även gör den delen dynamisk
+      {
+          spelplan[x][y] = buttons.get(tal);
+          buttons.get(tal).addActionListener(this); //??
+          k.add(buttons.get(tal));
+          tal++;
+          if (spelplan[x][y].getText() == "-")
+              System.out.println("success");
+      }
+  }
+    
+  
 System.out.println(spelplan[2][2].getClass().getName()); //vi vil dock kunan fp fram namn
       System.out.println(spelplan[2][3].getText());
       System.out.println(spelplan[2][3].getActionCommand());
@@ -104,16 +121,8 @@ System.out.println(spelplan[2][2].getClass().getName()); //vi vil dock kunan fp 
     // samt skapar textrutan genom JLabel
     p.add(nyttSpel);
     p.add(sluta);
-//     namn.addActionListener(this);
-//     öppna.addActionListener(this);
-//     spara.addActionListener(this);
-//     skriv.addActionListener(this);
-//     sluta.addActionListener(this);
     k.setLayout(new GridLayout(kartHöjd,kartBredd)); // (y,x) dock av ngn anleding
-    //k.add(ett); k.add(två); k.add(tre); k.add(fyra);
-//     k.add(fem); k.add(sex); k.add(sju); k.add(åtta);
-//     k.add(nio); k.add(tio); k.add(elva); k.add(tolv);
-//     k.add(tretton); k.add(fjorton); k.add(femton); //k.add(blank);
+
 
     add(p,  BorderLayout.NORTH); //denna ger oss platsen "högst upp" på vår panel
     add(k,  BorderLayout.CENTER);
@@ -123,6 +132,7 @@ System.out.println(spelplan[2][2].getClass().getName()); //vi vil dock kunan fp 
 //     tre.addActionListener(this);
 //     fyra.addActionListener(this);
     sluta.addActionListener(this);
+    nyttSpel.addActionListener(this);
 
     pack();
     setVisible(true);
@@ -158,9 +168,9 @@ System.out.println(spelplan[2][2].getClass().getName()); //vi vil dock kunan fp 
                 {
                 System.out.println("blank är till vänster");
                 
-                String tempBtnName4 = spelplan[x][y].getText();
+                String tempBtnName = spelplan[x][y].getText();
                 spelplan[x][y].setText(spelplan[x-1][y].getText());
-                spelplan[x-1][y].setText(tempBtnName4);
+                spelplan[x-1][y].setText(tempBtnName);
                 }
             }
             if (x < kartBredd-1) // kan kolla åt höger
@@ -169,9 +179,9 @@ System.out.println(spelplan[2][2].getClass().getName()); //vi vil dock kunan fp 
                 {
                 System.out.println("blank är till höger");
                 
-                String tempBtnName3 = spelplan[x][y].getText();
+                String tempBtnName = spelplan[x][y].getText();
                 spelplan[x][y].setText(spelplan[x+1][y].getText());
-                spelplan[x+1][y].setText(tempBtnName3);
+                spelplan[x+1][y].setText(tempBtnName);
                 }
             }
             if (y > 0) // kan kolla uppåt
@@ -180,9 +190,9 @@ System.out.println(spelplan[2][2].getClass().getName()); //vi vil dock kunan fp 
                 {
                 System.out.println("blank är ovanför");
                 
-                String tempBtnName2 = spelplan[x][y].getText();
+                String tempBtnName = spelplan[x][y].getText();
                 spelplan[x][y].setText(spelplan[x][y-1].getText());
-                spelplan[x][y-1].setText(tempBtnName2);
+                spelplan[x][y-1].setText(tempBtnName);
                 }
             }
             if (y < kartHöjd-1) // kan kolla nedåt
@@ -199,81 +209,44 @@ System.out.println(spelplan[2][2].getClass().getName()); //vi vil dock kunan fp 
         }
       }
     }
-//    if (clickedButton.equals(spelplan[1][1])) {
-//        System.out.println("nuså");
-//        if (spelplan[1][1].getActionCommand() == "-"){ //ändra till equals
-//            System.out.println("typiskt");
-//        }
-//            
-//        
-//        System.out.println(spelplan[1][1+1].getText());
-//        
-//       
-//
-//            if (spelplan[1][1+1].getText().equals("-")){
-//
-//                System.out.println("blank är nedanför");
-//                //skapa generell metod)
-//                String tempBtnName = spelplan[1][1].getText();
-//                spelplan[1][1].setText(spelplan[1][1+1].getText());
-//                spelplan[1][1+1].setText(tempBtnName);
-////                JButton tempButton = spelplan[1][1];
-////                tempButton.setLocation(spelplan[1][1].getLocation());
-////                spelplan[1][1] = spelplan[1][1+1];
-////                spelplan[1][1].setLocation(spelplan[1][1+1].getLocation());
-////                spelplan[1][1+1] = tempButton;
-////                spelplan[1][1+1].setLocation(tempButton.getLocation());
-//                
-//                k.repaint();
-//            }
-//
-//        System.out.println(spelplan[1][1-1].getText());
-//
-//            if (spelplan[1][1-1].getText().equals("-")){
-//
-//                System.out.println("blank är ovanför");
-//                String tempBtnName2 = spelplan[1][1].getText();
-//                spelplan[1][1].setText(spelplan[1][1-1].getText());
-//                spelplan[1][1-1].setText(tempBtnName2);
-//            }
-//
-//                System.out.println(spelplan[1+1][1].getText());
-//
-//            if (spelplan[1+1][1].getText().equals("-")){
-//
-//                System.out.println("blank är till höger");
-//                String tempBtnName3 = spelplan[1][1].getText();
-//                spelplan[1][1].setText(spelplan[1+1][1].getText());
-//                spelplan[1+1][1].setText(tempBtnName3);
-//            }
-//
-//            System.out.println(spelplan[1-1][1].getText());
-//            if (spelplan[1-1][1].getText().equals("-")){
-//
-//                System.out.println("blank är till vänster");
-//                String tempBtnName4 = spelplan[1][1].getText();
-//                spelplan[1][1].setText(spelplan[1-1][1].getText());
-//                spelplan[1-1][1].setText(tempBtnName4);
-//            }
-//    }
 
-//    void changePosition(JButton clicked, JButton blank)
-//    {
-//        
-//    }
-    /*
-    else if (e.getSource() == nyttSpel){
-    reShuffle(); //shuffla om alla brickor
-    }
-
-
-    */
 
 
     if (e.getSource() == sluta) {
       System.exit(0);
     }
+     if (e.getSource() == nyttSpel) {
+      shuffle(spelplan);
+    }
 }
+    
+    public void gameOver(JButton[][] a)
+    {
+        for (int y = 0; y < kartHöjd; y++)
+        {
+            for (int x = 0; x < kartBredd; x++) //kan ju här även skapa knapparna vilket även gör den delen dynamisk
+            {
+                spelplan[x][y] = buttons.get(tal);
+            }
+        }
+    }
+    public void shuffle(JButton[][] a)
+    {
+    Random random = new Random();
+        
+        for (int i = a.length - 1; i > 0; i--) //4x x 4y
+        {
+            for (int j = a[i].length - 1; j > 0; j--) {
+                int m = random.nextInt(i + 1); //till rasmus, är det för att vi hamnar som högst på 0.99 x 4? = 3.99999?? int ger 3?
+                int n = random.nextInt(j + 1);
+
+                String tempBtnName = a[i][j].getText(); //väldigt snarlik kod ovan
+                a[i][j].setText(a[m][n].getText());
+                a[m][n].setText(tempBtnName);       
+            }
+        }
+    }
+    
    //enums 2d array?
    
 
