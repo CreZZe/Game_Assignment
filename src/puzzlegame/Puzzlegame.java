@@ -52,7 +52,6 @@ public class Puzzlegame extends JFrame implements ActionListener {
                         return;
                     }
                     // gör att inget händer vid tryck på vår blanka knapp
-                    //System.out.println(clickedButton.getText());
                     
                     if (x > 0) // kan kolla åt vänster
                     {
@@ -110,9 +109,9 @@ public class Puzzlegame extends JFrame implements ActionListener {
         int talet = 1; //då börjar texten på knapprutorna på 1->
         //byggarbetsplats
         int maxTal = (size * size) - 1;
-        for (int y = 0; y < size; y++) //egentligen behövs bara en längd/höjd då det är en kvadrat -> size
+        for (int y = 0; y < size; y++)
         {
-            for (int x = 0; x < size; x++) //kan ju här även skapa knapparna vilket även gör den delen dynamisk
+            for (int x = 0; x < size; x++)
             {
                 // Exit condition för loopen
                 if (talet > maxTal) {
@@ -132,6 +131,7 @@ public class Puzzlegame extends JFrame implements ActionListener {
         emptyButton.addActionListener(this);
         k.add(emptyButton);
 
+        //Här kan vi slänge in en pre-game-shuffle
 
         p.add(nyttSpel);
         p.add(sluta);
@@ -147,7 +147,7 @@ public class Puzzlegame extends JFrame implements ActionListener {
     public boolean gameOver() {
         int spelplansStorlek = size*size;
         for (int y = 0; y < size; y++) {
-            for (int x = 0; x < size; x++) //kan ju här även skapa knapparna vilket även gör den delen dynamisk
+            for (int x = 0; x < size; x++)
             {
                 String buttonText = spelplan[x][y].getText();
                 int tal = y*size + x + 1;
@@ -171,10 +171,10 @@ public class Puzzlegame extends JFrame implements ActionListener {
     public void shuffle(JButton[][] a) {
         Random random = new Random();
 
-        for (int i = a.length - 1; i > 0; i--) //4x x 4y
+        for (int i = a.length - 1; i > 0; i--) //4x x 4y atm
         {
             for (int j = a[i].length - 1; j > 0; j--) {
-                int m = random.nextInt(i + 1); //till rasmus, är det för att vi hamnar som högst på 0.99 x 4? = 3.99999?? int ger 3?
+                int m = random.nextInt(i + 1);
                 int n = random.nextInt(j + 1);
                 
                 changePos(i, j, m, n);
