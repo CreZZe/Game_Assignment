@@ -1,175 +1,163 @@
 package puzzlegame;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Puzzlegame extends JFrame {
 
     private JPanel p = new JPanel();
     private JPanel k = new JPanel();
-
+    
     private JButton nyttSpel = new JButton("Nytt Spel");
     private JButton sluta = new JButton("Avsluta");
-    private JButton ett = new JButton("1");
-    private JButton två = new JButton("2");
-    private JButton tre = new JButton("3");
-    private JButton fyra = new JButton("4");
-    private JButton fem = new JButton("5");
-    private JButton sex = new JButton("6");
-    private JButton sju = new JButton("7");
-    private JButton åtta = new JButton("8");
-    private JButton nio = new JButton("9");
-    private JButton tio = new JButton("10");
-    private JButton elva = new JButton("11");
-    private JButton tolv = new JButton("12");
-    private JButton tretton = new JButton("13");
-    private JButton fjorton = new JButton("14");
-    private JButton femton = new JButton("15");
-    private JButton blank = new JButton("-");
+        
+    int kartBredd = 4;
+    int kartHöjd = 4;
+    public JButton[][] spelplan = new JButton[kartBredd][kartHöjd];
 
     List<JButton> buttons = new ArrayList<>();
-    List<List<JButton>> buttons2 = new ArrayList<>();
 
     public Puzzlegame() {
-        EventHandler handler = new EventHandler();
-
-        buttons.add(ett);
-        buttons.add(två);
-        buttons.add(tre);
-        buttons.add(fyra);
-        buttons.add(fem);
-        buttons.add(sex);
-        buttons.add(sju);
-        buttons.add(åtta);
-        buttons.add(nio);
-        buttons.add(tio);
-        buttons.add(elva);
-        buttons.add(tolv);
-        buttons.add(tretton);
-        buttons.add(fjorton);
-        buttons.add(femton);
-        buttons.add(blank);
-        Collections.shuffle(buttons);
-
+        Handler handler = new Handler(); 
+        
+        int tal = 0;
+        
+        for (int y = 0; y < kartHöjd; y++) //egentligen behövs bara en längd/höjd då det är en kvadrat
+        {
+            for (int x = 0; x < kartBredd; x++) //kan ju här även skapa knapparna vilket även gör den delen dynamisk
+            {
+                if (tal == (kartBredd * kartHöjd - 1)) {
+                    buttons.add(new JButton(" ")); 
+                }
+                else 
+                    buttons.add(new JButton((tal + 1) + ""));
+                
+                spelplan[x][y] = buttons.get(tal);
+                buttons.get(tal).addActionListener(handler);
+                k.add(buttons.get(tal));
+                tal++;
+            }
+        }
+        
+        shuffle(spelplan);
+        
         p.add(nyttSpel);
         p.add(sluta);
-
-        k.setLayout(new GridLayout(4, 4));
-
-        int a = 0;
-        for (int i = 0; i < 4; i++) {
-            buttons2.add(new ArrayList());
-            for (int j = 0; j < 4; j++) {
-                buttons2.get(i).add(buttons.get(a));
-                buttons.get(a).addActionListener(handler);
-                a++;
-            }
-        }
-
-        for (List<JButton> bList : buttons2) {
-            for (JButton b : bList) {
-                k.add(b);
-            }
-        }
-
-        add(p, BorderLayout.NORTH);
+        k.setLayout(new GridLayout(kartHöjd, kartBredd)); // (y,x) dock av ngn anleding
+        
+        add(p, BorderLayout.NORTH); //denna ger oss platsen "högst upp" på vår panel
         add(k, BorderLayout.CENTER);
 
         sluta.addActionListener(handler);
+        nyttSpel.addActionListener(handler);
 
-        setMinimumSize(new Dimension(400, 400));
+        setSize(380, 400);
+        setResizable(false);
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
-
-    public class EventHandler implements ActionListener {
-
+    
+    private class Handler implements ActionListener {
+        
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            for (int i = 0; i < buttons2.size(); i++) {
-                for (int j = 0; j < buttons2.get(i).size(); j++) {
+            JButton clickedButton = (JButton) e.getSource();
 
-                    if (buttons2.get(i).get(j) == blank) {
+            // undersök vilken knapp användaren har tryckt på
+            for (int y = 0; y < kartHöjd; y++) {
 
-                        //System.out.println(e.getActionCommand());
+                for (int x = 0; x < kartBredd; x++) {
+                    if (spelplan[x][y].equals(clickedButton)) {
+                        if (x > 0) // kan kolla åt vänster
+                            if (spelplan[x - 1][y].getText().equals(" "))//Blank är till vänster                            
+                                changePos(x, y, x-1, y);
 
-                        //System.out.println("i = " + i + " : j = " + j);
+                        if (x < kartBredd - 1) // kan kolla åt höger
+                            if (spelplan[x + 1][y].getText().equals(" "))//Blank är till höger                            
+                                changePos(x, y, x+1, y);
 
-                        
-                        
+                        if (y > 0) // kan kolla uppåt
+                            if (spelplan[x][y - 1].getText().equals(" ")) //Blank är ovanför
+                                changePos(x, y, x, y-1);
 
-                                    
-                        try {
-                            if (e.getSource() == buttons2.get(i).get(j - 1)) {
-                                System.out.println("Blank är till höger");
-
-//                                changePosition(i, j - 1, i, j);
-                            }
-                        } catch (Exception error) {}
-
-                        try {
-                            if (e.getSource() == buttons2.get(i).get(j + 1)) {
-                                System.out.println("Blank är till vänster");
-
-//                                changePosition(i, j + 1, i, j);
-                            }
-                        } catch (Exception error1) {}
-
-                        try {
-                            if (e.getSource() == buttons2.get(i - 1).get(j)) {
-                                System.out.println("Blank är under");
-
-//                                changePosition(i - 1, j, i, j);
-                            }
-                        } catch (Exception error2) {}
-
-                        try {
-                            if (e.getSource() == buttons2.get(i + 1).get(j)) {
-                                System.out.println("Blank är över");
-
-//                                changePosition(i + 1, j, i, j);
-                            }
-                        } catch (Exception error3) {}
+                        if (y < kartHöjd - 1) // kan kolla nedåt
+                            if (spelplan[x][y + 1].getText().equals(" ")) //Blank är nedanför                            
+                                changePos(x, y, x, y+1);
                     }
                 }
             }
 
-            if (e.getSource() == sluta) {
+            if (e.getSource() == sluta)
                 System.exit(0);
-            }
-
-            //enums 2d array?
+            
+            if (e.getSource() == nyttSpel)
+                shuffle(spelplan);
         }
+    }
+    
+    public void changePos(int x1, int y1, int x2, int y2) {
+        String tempBtnName = spelplan[x1][y1].getText();
+        spelplan[x1][y1].setText(spelplan[x2][y2].getText());
+        spelplan[x2][y2].setText(tempBtnName);
+        
+        checkIfGameWon();
+    }
 
-        void changePosition(int firstBlockX, int firstBlockY, int secondBlockX, int secondBlockY) {
-//            JButton tempButton = buttons2.get(firstBlockX).get(firstBlockY);
-//            buttons2.get(firstBlockX).set(firstBlockY, buttons2.get(secondBlockX).get(secondBlockY));
-//            buttons2.get(secondBlockX).set(secondBlockY, tempButton);
-//            
-//            JButton button = (JButton) tempButton;
-//            Container parent = button.getParent();
-//            parent.remove(button);
-//            parent.revalidate();
-//            parent.repaint();
-            
-            
-            //Göra om och använda getComponents()?
+    public void checkIfGameWon() {
+        int tal = 0;
+        int score = 0;
+        for (int y = 0; y < kartHöjd; y++) {
+            for (int x = 0; x < kartBredd; x++) //kan ju här även skapa knapparna vilket även gör den delen dynamisk
+            {
+                if (tal == (kartHöjd * kartBredd - 1))
+                    if (spelplan[x][y].getText().equals(" "))
+                        score++;
+                
+                if (spelplan[x][y].getText().equals((tal + 1) + ""))
+                    score++;
+                
+                tal++;
+                if (score == 16)
+                    JOptionPane.showMessageDialog(null, "Grattis, du vann!");
+            }
         }
     }
 
+    public void shuffle(JButton[][] a) {
+        Random random = new Random();
+
+        for (int i = a.length - 1; i > 0; i--) //4x x 4y
+        {
+            for (int j = a[i].length - 1; j > 0; j--) {
+                int m = random.nextInt(i + 1); //till rasmus, är det för att vi hamnar som högst på 0.99 x 4? = 3.99999?? int ger 3?
+                int n = random.nextInt(j + 1);
+
+                String tempBtnName = a[i][j].getText(); //väldigt snarlik kod ovan
+                a[i][j].setText(a[m][n].getText());
+                a[m][n].setText(tempBtnName);
+            }
+        }
+    }
+
+   //enums 2d array?
     public static void main(String[] args) {
         Puzzlegame pg = new Puzzlegame();
     }
 }
+
+/*
+    Lägga till antalet omstarter
+    Lägga till antalet flytt
+    Lägga till bakgrundsmusik?
+*/
