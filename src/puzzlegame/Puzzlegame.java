@@ -131,7 +131,8 @@ public class Puzzlegame extends JFrame implements ActionListener {
         emptyButton.addActionListener(this);
         k.add(emptyButton);
 
-        //Här kan vi slänge in en pre-game-shuffle
+        //Nu körs en pre-game-shuffle (om det är önskvärt)
+        shuffle(spelplan);
 
         p.add(nyttSpel);
         p.add(sluta);
