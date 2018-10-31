@@ -3,6 +3,7 @@ package puzzlegame;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -68,7 +69,6 @@ public class Puzzlegame extends JFrame {
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
-
     
     private class Handler implements ActionListener {
         
@@ -158,7 +158,6 @@ public class Puzzlegame extends JFrame {
     public static void main(String[] args) {
         Puzzlegame pg = new Puzzlegame();
     }
-
 }
 
 /*
