@@ -1,7 +1,9 @@
 package puzzlegame;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,7 +35,7 @@ public class Puzzlegame extends JFrame {
     public JButton[][] spelplan = new JButton[size][size];
 
     public Puzzlegame() {
-
+        super("Puzzlegame");
         createAndShowUI();
         initComponents();
         revalidate();
@@ -123,6 +125,8 @@ public class Puzzlegame extends JFrame {
                 }
 
                 JButton newButton = new JButton(Integer.toString(talet));
+                newButton.setBackground(new Color(200, 200, 200));
+                newButton.setFont(new Font(null, Font.BOLD, 16));
                 spelplan[x][y] = newButton;
                 newButton.addActionListener(handler);
                 k.add(newButton);
@@ -132,11 +136,14 @@ public class Puzzlegame extends JFrame {
 
         //om man vill lägga in blank sist
         JButton emptyButton = new JButton("");
+        emptyButton.setBackground(new Color(45, 35, 45));
+        emptyButton.setFont(new Font(null, Font.BOLD, 16));
         spelplan[size - 1][size - 1] = emptyButton;
         emptyButton.addActionListener(handler);
         k.add(emptyButton);
 
-        //shuffle(spelplan);
+        shuffle(spelplan);
+        
         p.add(nyttSpel);
         p.add(sluta);
         sluta.addActionListener(handler);
@@ -193,8 +200,11 @@ public class Puzzlegame extends JFrame {
 
     public void changePos(int x1, int y1, int x2, int y2) {
         String tempBtnName = spelplan[x1][y1].getText();
+        Color tempColor = spelplan[x1][y1].getBackground();
         spelplan[x1][y1].setText(spelplan[x2][y2].getText());
+        spelplan[x1][y1].setBackground(spelplan[x2][y2].getBackground());
         spelplan[x2][y2].setText(tempBtnName);
+        spelplan[x2][y2].setBackground(tempColor);
         antalDrag++;
     }
 
@@ -204,7 +214,5 @@ public class Puzzlegame extends JFrame {
 }
 
 /*
-    Lägga till antalet omstarter
-    Lägga till antalet flytt
     Lägga till bakgrundsmusik?
 */
