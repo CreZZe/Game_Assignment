@@ -201,5 +201,10 @@ public class Puzzlegame extends JFrame {
     public static void main(String[] args) {
         Puzzlegame pg = new Puzzlegame();
     }
-
 }
+
+/*
+    Lägga till antalet omstarter
+    Lägga till antalet flytt
+    Lägga till bakgrundsmusik?
+*/
